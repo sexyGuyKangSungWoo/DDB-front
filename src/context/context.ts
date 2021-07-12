@@ -6,11 +6,11 @@ function setStateOf<T>(object: T) {
     return (() => { }) as React.Dispatch<React.SetStateAction<T>>;
 }
 
-const ColorContext = createContext({
+const Context = createContext({
     user: null as unknown as User,
     setUser: setStateOf({} as User),
     jwt: '',
     setJwt: setStateOf(''),
 });
 
-export default ColorContext;
+export default Context;

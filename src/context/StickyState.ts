@@ -25,7 +25,14 @@ export function useStickyState<T>(defaultValue: T, key: string): [T, React.Dispa
     return [value, setValue];
 }
 
-
+/**
+ * localstorage에 저장되는 state 입니다.
+ * raw로 저장해 문자열만 가능합니다.
+ * 
+ * @param defaultValue useState와 같습니다.
+ * @param key localstorage에 저장될때 쓰이는 key입니다. 절대 중복되지 않게 하세요.
+ * @returns useState와 같습니다.
+ */
 export function useRawState(defaultValue: string, key: string): [string, React.Dispatch<React.SetStateAction<string>>] {
 
     const [value, setValue] = React.useState<string>(() => {

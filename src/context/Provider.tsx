@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import ColorContext from "./context";
+import Context from "./context";
 import { useRawState } from "./StickyState";
 import { User } from "./type";
-import { useLazyQuery, gql, useApolloClient } from '@apollo/client';
+import { gql, useApolloClient } from '@apollo/client';
 import { JWT_KEY } from "./consts";
 
 const GET_USER = gql`
@@ -60,9 +60,9 @@ const ColorProvider: React.FC = ({ children }) => {
 
 
     return (
-        <ColorContext.Provider value={state}>
+        <Context.Provider value={state}>
             {children}
-        </ColorContext.Provider>
+        </Context.Provider>
     );
 };
 
