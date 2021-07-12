@@ -9,18 +9,35 @@ import React from "react";
  * @param key localstorage에 저장될때 쓰이는 key입니다. 절대 중복되지 않게 하세요.
  * @returns useState와 같습니다.
  */
-export function useStickyState<T>(defaultValue:T, key:string): [T, React.Dispatch<React.SetStateAction<T>>] {
+export function useStickyState<T>(defaultValue: T, key: string): [T, React.Dispatch<React.SetStateAction<T>>] {
 
-  const [value, setValue] = React.useState<T>(() => {
-    const stickyValue = window.localStorage.getItem(key);
-    return stickyValue !== null
-      ? JSON.parse(stickyValue)
-      : defaultValue;
-  });
+    const [value, setValue] = React.useState<T>(() => {
+        const stickyValue = window.localStorage.getItem(key);
+        return stickyValue !== null
+            ? JSON.parse(stickyValue)
+            : defaultValue;
+    });
 
-  React.useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
+    React.useEffect(() => {
+        window.localStorage.setItem(key, JSON.stringify(value));
+    }, [key, value]);
 
-  return [value, setValue];
+    return [value, setValue];
+}
+
+
+export function useRawState(defaultValue: string, key: string): [string, React.Dispatch<React.SetStateAction<string>>] {
+
+    const [value, setValue] = React.useState<string>(() => {
+        const stickyValue = window.localStorage.getItem(key);
+        return stickyValue !== null
+            ? stickyValue
+            : defaultValue;
+    });
+
+    React.useEffect(() => {
+        window.localStorage.setItem(key, value);
+    }, [key, value]);
+
+    return [value, setValue];
 }

@@ -3,36 +3,40 @@ import {
     useHistory
 } from 'react-router-dom';
 import Context from '../context/context';
-import Constant from '../constants';
+import { gql, useApolloClient } from '@apollo/client';
+
+const LOGIN_QUERY = gql`
+    query Login($id:String!, $pw:String!){
+        login(id:$id, password:$pw)
+    }
+`;
 
 function Login() {
     const history = useHistory();
 
-    const { setStickyJwt } = useContext(Context);
+    const { setJwt } = useContext(Context);
 
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
-
+    const client = useApolloClient();
+    
     async function onSubmit() {
-        const res = await fetch(Constant.serverURL + '/auth/login', {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            method: 'POST',
-            body: JSON.stringify({
+        const res = await client.query({
+            query: LOGIN_QUERY,
+            variables:{
                 id,
-                password: pw,
-            })
-        })
-        const data = await res.json();
-        
-        if(data.success){
-            setStickyJwt(data.jwt);
-            
+                pw
+            }
+        });
+
+        const data = res.data;
+
+        if(data.login){
+            setJwt(data.login);
+            history.push('/');
         }
         else{
-            alert("로그인 실패");
+            console.error('account not founded');
         }
     }
 
@@ -50,7 +54,7 @@ function Login() {
                 </label>
             </div>
             <div>
-                <button onClick={onSubmit}>submit</button>
+                <button onClick={() => onSubmit()}>submit</button>
             </div>
         </>
     );

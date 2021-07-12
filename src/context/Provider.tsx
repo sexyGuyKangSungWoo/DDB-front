@@ -1,24 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ColorContext from "./context";
-import { useStickyState } from "./StickyState";
+import { useRawState } from "./StickyState";
+import { User } from "./type";
+import { useLazyQuery, gql, useApolloClient } from '@apollo/client';
+import { JWT_KEY } from "./consts";
+
+const GET_USER = gql`
+    query GET_USER{
+        currentUser{
+            id
+            nickname
+        }
+    }
+`;
 
 const ColorProvider: React.FC = ({ children }) => {
 
-  const [number, setNumber] = useState(0);
-  const [stickyJwt, setStickyJwt] = useStickyState('', '@@/P/jwt');
+    const client = useApolloClient();
 
-  const state = {
-    number,
-    setNumber,
-    stickyJwt,
-    setStickyJwt,
-  }
+    const [user, setUser] = useState<User>({
+        isAuthorized: false,
+        id: '',
+        nickname: '',
+    });
 
-  return (
-    <ColorContext.Provider value={state}>
-      {children}
-    </ColorContext.Provider>
-  );
+    const [jwt, setJwt] = useRawState('', JWT_KEY);
+
+    const state = {
+        user,
+        setUser,
+        jwt,
+        setJwt,
+    }
+
+    useEffect(() => {
+        if(!jwt) {
+            setUser({
+                isAuthorized: false,
+                id: '',
+                nickname: '',
+            });
+            return;
+        }
+
+        client.query({
+            query: GET_USER
+        })
+        .then(res => {
+            setUser({
+                isAuthorized: true,
+                id: res.data.currentUser.id,
+                nickname: res.data.currentUser.nickname,
+            });
+        })
+        .catch(e => {
+            console.error(e);
+        })
+    }, [jwt])
+
+
+    return (
+        <ColorContext.Provider value={state}>
+            {children}
+        </ColorContext.Provider>
+    );
 };
 
 export default ColorProvider;
