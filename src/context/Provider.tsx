@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Context from "./context";
+import Context from "./index";
 import { useRawState } from "./StickyState";
 import { User } from "./type";
 import { gql, useApolloClient } from '@apollo/client';

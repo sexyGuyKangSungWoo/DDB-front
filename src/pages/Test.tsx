@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Context from '../context/context';
+import Context from '../context';
 import { useContext } from 'react';
 
 function Test() {
