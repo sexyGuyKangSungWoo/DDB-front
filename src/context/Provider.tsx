@@ -15,25 +15,13 @@ const GET_USER = gql`
 `;
 
 const ColorProvider: React.FC = ({ children }) => {
-
+    
     const client = useApolloClient();
-
-    const [user, setUser] = useState<User>({
-        isAuthorized: false,
-        id: '',
-        nickname: '',
-    });
-
-    const [jwt, setJwt] = useRawState('', JWT_KEY);
-
-    const state = {
-        user,
-        setUser,
-        jwt,
-        setJwt,
-    }
-
-    useEffect(() => {
+    
+    const [jwt, setJwtState] = useRawState('', JWT_KEY);
+    function setJwt(value: string) {
+        setJwtState(value);
+        
         if(!jwt) {
             setUser({
                 isAuthorized: false,
@@ -42,7 +30,7 @@ const ColorProvider: React.FC = ({ children }) => {
             });
             return;
         }
-
+        
         client.query({
             query: GET_USER
         })
@@ -55,9 +43,21 @@ const ColorProvider: React.FC = ({ children }) => {
         })
         .catch(e => {
             console.error(e);
-        })
-    }, [jwt])
-
+        });
+    }
+    
+    const [user, setUser] = useState<User>({
+        isAuthorized: false,
+        id: '',
+        nickname: '',
+    });
+    
+    const state = {
+        user,
+        setUser,
+        jwt,
+        setJwt,
+    }
 
     return (
         <Context.Provider value={state}>

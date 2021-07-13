@@ -10,7 +10,7 @@ const Context = createContext({
     user: null as unknown as User,
     setUser: setStateOf({} as User),
     jwt: '',
-    setJwt: setStateOf(''),
+    setJwt: (value:string)=>{},
 });
 
 export default Context;
