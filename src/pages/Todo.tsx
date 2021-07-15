@@ -39,10 +39,6 @@ function Todo(){
         )));
     };
 
-    // useEffect(() => {
-    //     setContextTodoList(todoList);
-    // }, [todoList])
-
     return(
         <>
             <div>
@@ -55,9 +51,10 @@ function Todo(){
                 {todoList.map(todoList => (
                     <div>
                         <span>{todoList.todo}</span>
-                        {todoList.checked ? '  checked!  ' : '  unchecked  '}
-                        <button onClick={e => check(todoList.id)}>check!</button>
+                        {/* {todoList.checked ? '  checked!  ' : '  unchecked  '} */}
+                        {/* <button onClick={e => check(todoList.id)}>check!</button> */}
                         <button onClick={e => deleteTodo(todoList.id)}>delete</button>
+                        
                     </div>
                 ))}
             </div>
