@@ -11,7 +11,7 @@ function Main() {
     const { user } = useContext(Context);
     return (
         <>
-            {/* <p>
+            <p>
                 <Link to="/login">Login</Link>
             </p>
             <p>
@@ -24,7 +24,7 @@ function Main() {
             }
             <p>
                 <Link to="/thelab">TheLab</Link>
-            </p> */}
+            </p>
             <div>
                 <Todo></Todo>
             </div>

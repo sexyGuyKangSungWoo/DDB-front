@@ -1,6 +1,6 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useRef } from "react";
 import Context from "../context";
-import { gql, useApolloClient } from '@apollo/client';
+import { gql, useApolloClient, useQuery } from '@apollo/client';
 
 function Todo(){
     const [input, setInput] = useState('');
@@ -11,6 +11,14 @@ function Todo(){
     //         checked: false,
     //     }
     // ]);
+
+    // const client = useApolloClient();
+
+    // const GET_TODO_ITEMS = gql`
+        
+    // `;
+
+    // const { data } = useQuery(GET_TODO_ITEMS);
 
     const { todoList, setTodoList } = useContext(Context);
 
