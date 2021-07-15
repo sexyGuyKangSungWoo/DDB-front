@@ -4,6 +4,7 @@ import {
     Link
 } from 'react-router-dom';
 import { useContext } from "react";
+import Todo from "./Todo"
 
 
 function Main() {
@@ -24,6 +25,9 @@ function Main() {
             <p>
                 <Link to="/thelab">TheLab</Link>
             </p>
+            <div>
+                <Todo></Todo>
+            </div>
         </>
     );
 }

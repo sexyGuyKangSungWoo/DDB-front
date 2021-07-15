@@ -7,3 +7,9 @@ export interface User{
     id: string | null,
     nickname: string | null,
 }
+
+export interface Todo{
+    id: number,
+    todo: string,
+    checked: boolean,
+}

@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { User } from "./type";
+import { User, Todo } from "./type";
 
 // 쉬운 타이핑 위한 함수.
 function setStateOf<T>(object: T) {
@@ -11,6 +11,8 @@ const Context = createContext({
     setUser: setStateOf({} as User),
     jwt: '',
     setJwt: (value:string)=>{},
+    todoList: null as unknown as Todo[],
+    setTodoList: setStateOf({} as Todo[])
 });
 
 export default Context;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Context from "./index";
 import { useRawState } from "./StickyState";
-import { User } from "./type";
+import { Todo, User } from "./type";
 import { gql, useApolloClient } from '@apollo/client';
 import { JWT_KEY } from "./consts";
 
@@ -51,12 +51,22 @@ const ColorProvider: React.FC = ({ children }) => {
         id: '',
         nickname: '',
     });
+
+    const [todoList, setTodoList] = useState<Todo[]>([
+        {
+            id: 0,
+            todo: 'TODO',
+            checked: false,
+        }
+    ]);
     
     const state = {
         user,
         setUser,
         jwt,
         setJwt,
+        todoList,
+        setTodoList,
     }
 
     return (
