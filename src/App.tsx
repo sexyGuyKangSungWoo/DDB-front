@@ -11,6 +11,8 @@ import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Notfound from './pages/Notfound';
 import Register from './pages/Register';
+import TodoList from './pages/TodoList';
+import Todo from './pages/Todo';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
       <Switch>
         <Route path="/" exact component={Main} />
         <Route path="/thelab" component={Test} />
+        <Route path="/todo" exact component={TodoList} />
+        <Route path="/todo/:id" component={Todo} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/logout" component={Logout} />

@@ -7,9 +7,8 @@ function setStateOf<T>(object: T) {
 }
 
 const Context = createContext({
-    user: null as unknown as User,
-    setUser: setStateOf({} as User),
     jwt: '',
+    logged: false,
     setJwt: (value:string)=>{},
     todoList: null as unknown as Todo[],
     setTodoList: setStateOf({} as Todo[])

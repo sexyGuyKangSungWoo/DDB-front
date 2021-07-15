@@ -1,16 +1,45 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import Context from "../context";
-import { gql, useApolloClient } from '@apollo/client';
-
+import { gql, useApolloClient, useQuery } from '@apollo/client';
+import {
+    useParams
+} from 'react-router-dom';
 function Todo(){
     const [input, setInput] = useState('');
-    // const [todoList, setTodoList] = useState([
-    //     {
-    //         id: 0,
-    //         todo: 'TODO',
-    //         checked: false,
-    //     }
-    // ]);
+
+    const client = useApolloClient();
+
+    const id = useParams<{ id: string }>();
+
+    const GET_TODO_ITEMS = gql`
+        query GET_TODO_ITEMS($id:String!){
+            User(id: $id){
+                todoLists{
+                    todoItems{
+                        body,
+                        id,
+                        done
+                    }
+                }
+            }
+        }
+    `;
+
+    interface todoItemsType {
+        id: number;
+        body: string;
+        done: boolean;
+    }
+
+    const { data } = useQuery<todoItemsType>(
+        GET_TODO_ITEMS,
+        {
+            variables:{
+                id
+            }
+        }
+    );
+
 
     const { todoList, setTodoList } = useContext(Context);
 
@@ -39,6 +68,11 @@ function Todo(){
         )));
     };
 
+    interface items {
+        body: string;
+        id: number;
+    }
+
     return(
         <>
             <div>
@@ -54,9 +88,13 @@ function Todo(){
                         {todoList.checked ? '  checked!  ' : '  unchecked  '}
                         <button onClick={e => check(todoList.id)}>check!</button>
                         <button onClick={e => deleteTodo(todoList.id)}>delete</button>
-                        
                     </div>
                 ))}
+            </div>
+            <div>
+                {/* {data?.currentUser.todoLists.todoItems.map((listData: items) => (
+                    <div>{listData.body}</div>
+                ))} */}
             </div>
         </>
     );

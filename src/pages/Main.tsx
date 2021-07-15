@@ -5,29 +5,33 @@ import {
 } from 'react-router-dom';
 import { useContext } from "react";
 import Todo from "./Todo"
+import useUser from "../hooks/useUser";
 
 
 function Main() {
-    const { user } = useContext(Context);
+    const { logged } = useContext(Context);
+
     return (
         <>
-            {/* <p>
+            <p>
                 <Link to="/login">Login</Link>
             </p>
             <p>
                 <Link to="/register">Register</Link>
             </p>
-            {user.isAuthorized &&
-            <p>
-                <Link to="/logout">Logout</Link>
-            </p>
+            {logged &&
+            <>
+                <p>
+                    <Link to="/logout">Logout</Link>
+                </p>
+                <p>
+                    <Link to="/todo">Todo</Link>
+                </p>
+            </>
             }
             <p>
                 <Link to="/thelab">TheLab</Link>
-            </p> */}
-            <div>
-                <Todo></Todo>
-            </div>
+            </p>
         </>
     );
 }

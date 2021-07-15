@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import Context from '../context';
 import { useContext } from 'react';
+import useUser from "../hooks/useUser";
 
 function Test() {
 
-    const { user, setUser, jwt, setJwt } = useContext(Context);
+    const { jwt, setJwt } = useContext(Context);
+    const user = useUser();
     const [token, setToken] = useState('');
     const [id, setId] = useState('');
     const [nickname, setNickname] = useState('');
 
     function onSave(){
-        setUser({
-            ...user,
-            id,
-            nickname,
-        });
         setJwt(token);
     }
 
@@ -27,17 +24,20 @@ function Test() {
                         <p>token: {jwt}</p>
                         <input type="text" onChange={e => setToken(e.target.value)} />
                     </div>
-                    <div>
-                        <p>id: {user.id}</p>
-                        <input type="text" onChange={e => setId(e.target.value)} />
-                    </div>
-                    <div>
-                        <p>nickname: {user.nickname}</p>
-                        <input type="text" onChange={e => setNickname(e.target.value)} />
-                    </div>
-                    <div>
-                        <button onClick={onSave}>save</button>
-                    </div>
+                    {
+                        jwt &&
+                        <>
+                        <div>
+                            <p>id: {user?.id}</p>
+                        </div>
+                        <div>
+                            <p>nickname: {user?.nickname}</p>
+                        </div>
+                        <div>
+                            <button onClick={onSave}>save</button>
+                        </div>
+                        </>
+                    }
                 </div>
             </header>
         </div>
