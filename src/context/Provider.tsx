@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Context from "./index";
 import { useRawState } from "./StickyState";
-import { Todo, User } from "./type";
-import { gql, useApolloClient } from '@apollo/client';
+import { Todo } from "./type";
 import { JWT_KEY } from "./consts";
 
 const ColorProvider: React.FC = ({ children }) => {
-    
-    const client = useApolloClient();
     
     const [jwt, setJwt] = useRawState('', JWT_KEY);
 

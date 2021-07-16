@@ -4,8 +4,6 @@ import {
     Link
 } from 'react-router-dom';
 import { useContext } from "react";
-import Todo from "./Todo"
-import useUser from "../hooks/useUser";
 
 
 function Main() {

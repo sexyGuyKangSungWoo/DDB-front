@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { User, Todo } from "./type";
+import { Todo } from "./type";
 
 // 쉬운 타이핑 위한 함수.
 function setStateOf<T>(object: T) {

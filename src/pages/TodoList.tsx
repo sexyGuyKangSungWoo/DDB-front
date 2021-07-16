@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom';
 import Context from '../context';
 import { gql, useApolloClient, useQuery } from '@apollo/client';
-import { useEffect } from "react";
 
 const EDIT_LIST = gql`
     mutation UPDATE_TODOLIST($id: String!, $input: TodoListInput!){
@@ -101,7 +100,7 @@ const NEW_TODOLIST = gql`
 `;
 
 function TodoList() {
-    const { loading, error, data, refetch } = useQuery(GET_TODOLISTS, {
+    const { data, refetch } = useQuery(GET_TODOLISTS, {
         notifyOnNetworkStatusChange: true,
         onCompleted: () => {setList(data?.currentUser.todoLists)},
     });
@@ -110,10 +109,9 @@ function TodoList() {
     const history = useHistory();
     const client = useApolloClient();
 
-    useEffect(() => {
-        if(!logged)
-            history.push('/login');
-    }, [])
+    if(!logged)
+        history.push('/login');
+    
 
     function newTodoList(){
         client.mutate({

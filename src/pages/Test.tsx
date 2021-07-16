@@ -8,8 +8,6 @@ function Test() {
     const { jwt, setJwt } = useContext(Context);
     const user = useUser();
     const [token, setToken] = useState('');
-    const [id, setId] = useState('');
-    const [nickname, setNickname] = useState('');
 
     function onSave(){
         setJwt(token);

@@ -25,7 +25,7 @@ function useUser(): User | null {
 
             setUser(res.data.currentUser);
         })();
-    }, []);
+    }, [apolloClient]);
 
     return user;
 }
