@@ -10,8 +10,6 @@ const Context = createContext({
     jwt: '',
     logged: false,
     setJwt: (value:string)=>{},
-    todoList: null as unknown as Todo[],
-    setTodoList: setStateOf({} as Todo[])
 });
 
 export default Context;
