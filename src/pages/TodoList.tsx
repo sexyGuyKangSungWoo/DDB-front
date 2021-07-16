@@ -27,9 +27,9 @@ interface ListData {
     id: number;
 }
 
-function ListItem({ listData, refetch }: { listData:ListData, refetch: Function }){
+function ListItem({ listData, setList, list }: { listData:ListData, setList: Function, list:ListData[] }){
     const [isEditing, setIsEditing] = useState(false);
-    const [name, setName] = useState('');
+    const [name, setName] = useState(listData.name);
     const client = useApolloClient();
 
     function editClick(){
@@ -55,12 +55,12 @@ function ListItem({ listData, refetch }: { listData:ListData, refetch: Function 
             }
         })
         .then(() => {
-            refetch();
+            setList(list.filter(v => v.id !== listData.id));
         })
     }
 
     return (
-        <div key={listData.id}>
+        <div>
             <div>
                 {isEditing ?
                     <input type="text" value={name} onChange={e => setName(e.target.value)}/>
@@ -101,7 +101,11 @@ const NEW_TODOLIST = gql`
 `;
 
 function TodoList() {
-    const  { loading, error, data, refetch } = useQuery(GET_TODOLISTS);
+    const { loading, error, data, refetch } = useQuery(GET_TODOLISTS, {
+        notifyOnNetworkStatusChange: true,
+        onCompleted: () => {setList(data?.currentUser.todoLists)},
+    });
+    const [ list, setList ] = useState<ListData[]>([]);
     const { logged } = useContext(Context);
     const history = useHistory();
     const client = useApolloClient();
@@ -120,7 +124,7 @@ function TodoList() {
                 }
             }
         })
-        .then(()=>{
+        .then(() => {
             refetch();
         });
     }
@@ -129,8 +133,8 @@ function TodoList() {
         <>
             <button onClick={newTodoList}>new</button>
 
-            {data?.currentUser.todoLists.map((listData: ListData) => (
-                <ListItem listData={listData} refetch={refetch}></ListItem>
+            {list.map((listData: ListData) => (
+                <ListItem listData={listData} setList={setList} list={list} key={listData.id} />
             ))}
         </>
     );
