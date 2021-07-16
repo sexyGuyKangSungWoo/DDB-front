@@ -7,14 +7,18 @@ import Context from '../context';
 import { gql, useApolloClient, useQuery } from '@apollo/client';
 import { useEffect } from "react";
 
-const GET_TODOLISTS = gql`
-    query GET_TODOLISTS{
-        currentUser{
-            todoLists{
-                id
-                name
-            }
+const EDIT_LIST = gql`
+    mutation UPDATE_TODOLIST($id: String!, $input: TodoListInput!){
+        updateTodoList(id:$id, todoList:$input){
+            id
+            name
         }
+    }
+`;
+
+const DELETE_LIST = gql`
+    mutation UPDATE_TODOLIST($id: String!){
+        deleteTodoList(id:$id)
     }
 `;
 
@@ -23,19 +27,36 @@ interface ListData {
     id: number;
 }
 
-function ListItem({ listData }: { listData:ListData }){
+function ListItem({ listData, refetch }: { listData:ListData, refetch: Function }){
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState('');
+    const client = useApolloClient();
 
     function editClick(){
         if(isEditing){
-            // TODO: send change value
+            client.mutate({
+                mutation: EDIT_LIST,
+                variables: {
+                    id: listData.id,
+                    input: {
+                        name,
+                    }
+                }
+            });
         }
         setIsEditing(v => !v);
     }
 
     function deleteClick(){
-        //TODO: send delete 
+        client.mutate({
+            mutation: DELETE_LIST,
+            variables: {
+                id: listData.id
+            }
+        })
+        .then(() => {
+            refetch();
+        })
     }
 
     return (
@@ -53,26 +74,63 @@ function ListItem({ listData }: { listData:ListData }){
                 delete
             </button>
             <button onClick={editClick}>
-                {isEditing ? 'submit' : 'edit'}
+                {isEditing ? 'save' : 'edit'}
             </button>
         </div>
     )
 }
 
+
+const GET_TODOLISTS = gql`
+    query GET_TODOLISTS{
+        currentUser{
+            todoLists{
+                id
+                name
+            }
+        }
+    }
+`;
+
+const NEW_TODOLIST = gql`
+    mutation NEW_TODOLIST($input: TodoListInput!){
+        createTodoList(todoList: $input){
+            id
+        }
+    }
+`;
+
 function TodoList() {
-    const { loading, error, data } = useQuery(GET_TODOLISTS);
+    const  { loading, error, data, refetch } = useQuery(GET_TODOLISTS);
     const { logged } = useContext(Context);
     const history = useHistory();
+    const client = useApolloClient();
 
     useEffect(() => {
         if(!logged)
             history.push('/login');
     }, [])
 
+    function newTodoList(){
+        client.mutate({
+            mutation: NEW_TODOLIST,
+            variables: {
+                input: {
+                    name: 'New TodoList'
+                }
+            }
+        })
+        .then(()=>{
+            refetch();
+        });
+    }
+
     return (
         <>
+            <button onClick={newTodoList}>new</button>
+
             {data?.currentUser.todoLists.map((listData: ListData) => (
-                <ListItem listData={listData}></ListItem>
+                <ListItem listData={listData} refetch={refetch}></ListItem>
             ))}
         </>
     );
