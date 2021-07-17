@@ -35,7 +35,7 @@ function AddPage(){
     }]);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [apiType, setApiType] = useState('');
+    const [apiType, setApiType] = useState('REST');
     const [providerURL, setProviderURL] = useState('');
     const [endPoint, setEndPoint] = useState('');
 
@@ -58,7 +58,7 @@ function AddPage(){
                             outline: 'none',
                         }}
                         onChange={e => setApiType(e.target.value)}>
-                            <option value="REST" selected>REST</option>
+                            <option value="REST">REST</option>
                             <option value="GQL">GQL</option>
                             <option value="DATA SET">DATA SET</option>
                             <option value="OTHER">OTHER</option>
