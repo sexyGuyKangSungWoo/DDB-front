@@ -136,6 +136,8 @@ function AddPage(){
                                 endPoint,
                                 tags:[]
                             }
+                        }).then(res =>{
+                            history.push(`detail/${res.data.createDocAPI.id}`);
                         })
                     }}>
                         Add
